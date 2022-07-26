@@ -13,7 +13,7 @@ level_map = [
 'X XXXX                            LLL                                                             X',
 'X XX       LL     L?L    C    LL       LL               LLLLLLLLLLLLLLLLLLL ????????????????????? X',
 'X LL                                                                                              X',
-'X                                                                                                 X',
+'X         G      GG                    G              G            GGG                  GG        X',
 'XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX',
 'XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX']
 

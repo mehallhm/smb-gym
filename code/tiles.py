@@ -1,11 +1,12 @@
 from abc import abstractclassmethod
 import pygame
+import constants as c
 
 class Tile(pygame.sprite.Sprite):
 	def __init__(self) -> None:
 		super().__init__()
 	
-	def update(self,x_shift) -> None:
+	def update(self, x_shift) -> None:
 		self.rect.x += x_shift
 		try:
 			self.update_block_state()
@@ -17,11 +18,11 @@ class Tile(pygame.sprite.Sprite):
 		pass
 	
 	@abstractclassmethod 
-	def bump(self, mario_state, player):
+	def bump(self):
 		pass
 
 	@abstractclassmethod
-	def collide(self):
+	def collide(self, direction, level, player):
 		pass
 
 class Block(Tile):
@@ -52,11 +53,18 @@ class Brick_block(Block):
 				if self.broke:
 					self.kill()
 	
-	def bump(self, mario_state, player):
-		if not self.bumped:
+	# def bump(self, mario_state, player):
+	# 	if not self.bumped:
+	# 		self.y_vel = -3
+	# 		self.bumped = True
+	# 		if mario_state > 0:
+	# 			self.broke = True
+	
+	def collide(self, direction, level, player):
+		if direction == c.BOTTOM and not self.bumped:
 			self.y_vel = -3
 			self.bumped = True
-			if mario_state > 0:
+			if player.state > 0:
 				self.broke = True
 		
 class Question_block(Tile):
@@ -88,8 +96,13 @@ class Question_block(Tile):
 
 				self.bumped = False
 	
-	def bump(self, mario_state, player):
-		if not self.broken and not self.bumped :
+	# def bump(self, mario_state, player):
+	# 	if not self.broken and not self.bumped :
+	# 		self.y_vel = -3
+	# 		self.bumped = True
+	
+	def collide(self, direction, level, player):
+		if direction == c.BOTTOM and not self.broken and not self.bumped :
 			self.y_vel = -3
 			self.bumped = True
 
@@ -111,7 +124,7 @@ class Coin(Tile):
 		self.animation_speed = 0.07
 		self.animation_index = 0
 
-	def collide(self):
+	def collide(self, direction, level, player):
 		self.kill()
 		return True
 	

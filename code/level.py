@@ -2,6 +2,8 @@ import pygame
 from tiles import * 
 from settings import tile_size, screen_width
 from player import Player
+from enemies import *
+import constants as c
 
 class Level:
 	def __init__(self, level_data, surface):
@@ -34,6 +36,10 @@ class Level:
 					# tile = Coin((x,y), ['../graphics/environment/coin.png', '../graphics/environment/coin2.png', '../graphics/environment/coin3.png', '../graphics/environment/coin4.png'])
 					tile = Coin((x,y), '../graphics/environment/coin_tilemap.png')
 					self.tiles.add(tile)
+				if cell == 'G':
+					# tile = Coin((x,y), ['../graphics/environment/coin.png', '../graphics/environment/coin2.png', '../graphics/environment/coin3.png', '../graphics/environment/coin4.png'])
+					tile = Goomba((x,y), (16, 16), '../graphics/environment/notgoomba.png')
+					self.tiles.add(tile)
 				if cell == 'P':
 					player_sprite = Player((x,y),self.display_surface)
 					self.player.add(player_sprite)
@@ -63,15 +69,17 @@ class Level:
 		for sprite in self.tiles.sprites():
 			if sprite.rect.colliderect(player.rect):
 				if player.direction.x < 0:
-					if not sprite.collide(): 
+					if not sprite.collide(c.LEFT, self, self.player.sprite): 
 						player.rect.left = sprite.rect.right
 						player.on_left = True
 						self.current_x = player.rect.left
 				elif player.direction.x > 0:
-					if not sprite.collide():
+					if not sprite.collide(c.RIGHT, self, self.player.sprite):
 						player.rect.right = sprite.rect.left
 						player.on_right = True
 						self.current_x = player.rect.right
+				else:
+					sprite.collide(c.STAND, self, self.player.sprite)
 
 		if player.on_left and (player.rect.left < self.current_x or player.direction.x >= 0):
 			player.on_left = False
@@ -86,16 +94,17 @@ class Level:
 			sprite.animate()
 			if sprite.rect.colliderect(player.rect):
 				if player.direction.y > 0:
-					if not sprite.collide():
+					if not sprite.collide(c.TOP, self, self.player.sprite):
 						player.rect.bottom = sprite.rect.top
 						player.direction.y = 0
 						player.on_ground = True
 				elif player.direction.y < 0:
-					if not sprite.collide():
+					if not sprite.collide(c.BOTTOM, self, self.player.sprite):
 						player.rect.top = sprite.rect.bottom
 						player.direction.y = -1
 						player.on_ceiling = True
-						sprite.bump(player.state, player)
+				else:
+					sprite.collide(c.STAND, self, self.player.sprite)
 					
 
 		if player.on_ground and (player.direction.y < 0 or player.direction.y > 1):
