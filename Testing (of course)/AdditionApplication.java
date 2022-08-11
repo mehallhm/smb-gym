@@ -2,8 +2,10 @@ import py4j.GatewayServer;
 
 public class AdditionApplication {
 
-  public int addition(int first, int second) {
-    return first + second;
+  public String strange = "World of wonders";
+
+  public String addition(int first, int second) {
+    return "Hello World!";
   }
 
   public static void main(String[] args) {
