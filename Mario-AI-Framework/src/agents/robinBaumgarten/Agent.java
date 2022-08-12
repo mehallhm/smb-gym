@@ -9,7 +9,7 @@ import engine.helper.MarioActions;
  * @author RobinBaumgarten
  */
 public class Agent implements MarioAgent {
-    private boolean[] action;
+    public boolean[] action;
     private AStarTree tree;
 
     @Override

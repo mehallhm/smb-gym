@@ -9,6 +9,10 @@ import engine.core.MarioResult;
 import py4j.GatewayServer;
 
 public class PlayLevel {
+
+    public static MarioAgent agent = new agents.robinBaumgarten.Agent();
+    public static MarioGame game = new MarioGame();
+
     public static void printResults(MarioResult result) {
         System.out.println("****************************************************************");
         System.out.println("Game Status: " + result.getGameStatus().toString() +
@@ -35,10 +39,7 @@ public class PlayLevel {
     }
 
     public static void play() {
-        MarioGame game = new MarioGame();
         // printResults(game.playGame(getLevel("./levels/original/lvl-1.txt"), 200, 0));
-        MarioAgent agent = new agents.robinBaumgarten.Agent();
-
         printResults(game.runGame(agent, getLevel("./levels/original/lvl-1.txt"), 20, 0, true));
     }
 

@@ -24,7 +24,8 @@ public class MarioWorld {
     public boolean visuals;
     public int currentTick;
     //Status
-    public int coins, lives;
+    public int coins;
+    public int lives = 1;
     public ArrayList<MarioEvent> lastFrameEvents;
 
     private MarioEvent[] killEvents;

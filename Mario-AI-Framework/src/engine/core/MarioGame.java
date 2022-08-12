@@ -247,28 +247,7 @@ public class MarioGame {
         ArrayList<MarioEvent> gameEvents = new ArrayList<>();
         ArrayList<MarioAgentEvent> agentEvents = new ArrayList<>();
         while (this.world.gameStatus == GameStatus.RUNNING) {
-            if (!this.pause) {
-                //get actions
-                agentTimer = new MarioTimer(MarioGame.maxTime);
-                boolean[] actions = this.agent.getActions(new MarioForwardModel(this.world.clone()), agentTimer);
-                if (MarioGame.verbose) {
-                    if (agentTimer.getRemainingTime() < 0 && Math.abs(agentTimer.getRemainingTime()) > MarioGame.graceTime) {
-                        System.out.println("The Agent is slowing down the game by: "
-                                + Math.abs(agentTimer.getRemainingTime()) + " msec.");
-                    }
-                }
-                // update world
-                this.world.update(actions);
-                gameEvents.addAll(this.world.lastFrameEvents);
-                agentEvents.add(new MarioAgentEvent(actions, this.world.mario.x,
-                        this.world.mario.y, (this.world.mario.isLarge ? 1 : 0) + (this.world.mario.isFire ? 1 : 0),
-                        this.world.mario.onGround, this.world.currentTick));
-            }
-
-            //render world
-            if (visual) {
-                this.render.renderWorld(this.world, renderTarget, backBuffer, currentBuffer);
-            }
+            step(level, timer, marioState, visual, fps, renderTarget, backBuffer, currentBuffer, agentTimer, currentTime, gameEvents, agentEvents);
             //check if delay needed
             if (this.getDelay(fps) > 0) {
                 try {
@@ -277,8 +256,34 @@ public class MarioGame {
                 } catch (InterruptedException e) {
                     break;
                 }
-            }
         }
+        }
+
         return new MarioResult(this.world, gameEvents, agentEvents);
+    }
+
+    public void step(String level, int timer, int marioState, boolean visual, int fps, VolatileImage renderTarget, Graphics backBuffer, Graphics currentBuffer, MarioTimer agentTimer, long currentTime, ArrayList<MarioEvent> gameEvents, ArrayList<MarioAgentEvent> agentEvents) {
+        if (!this.pause) {
+            //get actions
+            agentTimer = new MarioTimer(MarioGame.maxTime);
+            boolean[] actions = this.agent.getActions(new MarioForwardModel(this.world.clone()), agentTimer);
+            if (MarioGame.verbose) {
+                if (agentTimer.getRemainingTime() < 0 && Math.abs(agentTimer.getRemainingTime()) > MarioGame.graceTime) {
+                    System.out.println("The Agent is slowing down the game by: "
+                            + Math.abs(agentTimer.getRemainingTime()) + " msec.");
+                }
+            }
+            // update world
+            this.world.update(actions);
+            gameEvents.addAll(this.world.lastFrameEvents);
+            agentEvents.add(new MarioAgentEvent(actions, this.world.mario.x,
+                    this.world.mario.y, (this.world.mario.isLarge ? 1 : 0) + (this.world.mario.isFire ? 1 : 0),
+                    this.world.mario.onGround, this.world.currentTick));
+        }
+
+        //render world
+        if (visual) {
+            this.render.renderWorld(this.world, renderTarget, backBuffer, currentBuffer);
+        }
     }
 }
