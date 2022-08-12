@@ -38,9 +38,10 @@ public class PlayLevel {
         return content;
     }
 
-    public static void play() {
+    public static void initialize() {
         // printResults(game.playGame(getLevel("./levels/original/lvl-1.txt"), 200, 0));
-        printResults(game.runGame(agent, getLevel("./levels/original/lvl-1.txt"), 20, 0, true));
+        // printResults(game.runGame(agent, getLevel("./levels/original/lvl-1.txt"), 20, 0, true));
+        game.runGameN(agent, getLevel("./levels/original/lvl-1.txt"), 20, 0, true);
     }
 
     public static void main(String[] args) {

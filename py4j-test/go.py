@@ -4,10 +4,17 @@ import py4j
 gateway = JavaGateway()
 
 root = gateway.entry_point
-root.play()
+root.initialize()
 
 agent = py4j.java_gateway.get_field(root, 'agent')
 game = py4j.java_gateway.get_field(root, 'game')
+
+# game.gameLoop(30)
+while True:
+	inp = input("Continue? ")
+	if inp == "":
+		game.step()
+	inp = None
 
 # print(get_agent)
 
