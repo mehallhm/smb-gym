@@ -55,7 +55,7 @@ public class MarioGame {
     private JFrame window = null;
     private MarioRender render = null;
     private MarioAgent agent = null;
-    private MarioWorld world = null;
+    public MarioWorld world = null;
 
     // per loop information to be stored
     public ArrayList<MarioEvent> gameEvents = null;

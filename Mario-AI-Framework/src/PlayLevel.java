@@ -10,7 +10,8 @@ import py4j.GatewayServer;
 
 public class PlayLevel {
 
-    public static MarioAgent agent = new agents.robinBaumgarten.Agent();
+    // public static MarioAgent agent = new agents.robinBaumgarten.Agent();
+    public static MarioAgent agent = new agents.bridge.Agent();
     public static MarioGame game = new MarioGame();
 
     public static void printResults(MarioResult result) {
