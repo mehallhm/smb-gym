@@ -53,7 +53,6 @@ class Env:
 
 env = Env()
 
-
 # tacky gameloop
 while True:
 	inp = input("Action: ")
