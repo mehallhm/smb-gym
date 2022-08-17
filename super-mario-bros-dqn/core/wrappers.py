@@ -5,7 +5,11 @@ from gym import make, ObservationWrapper, wrappers, Wrapper
 from gym.spaces import Box
 from nes_py.wrappers import JoypadSpace
 
+"""
+Takes in an image 84 x 84 in 255 color on uint8 format
 
+Makes the image black and white, then fits to an 84 by 84
+"""
 class FrameDownsample(ObservationWrapper):
     def __init__(self, env):
         super(FrameDownsample, self).__init__(env)
@@ -23,7 +27,9 @@ class FrameDownsample(ObservationWrapper):
                            interpolation=cv2.INTER_AREA)
         return frame[:, :, None]
 
-
+"""
+Creates a stack of frames, then returns the max; reset meathod
+"""
 class MaxAndSkipEnv(Wrapper):
     def __init__(self, env=None, skip=4):
         super(MaxAndSkipEnv, self).__init__(env)
@@ -68,7 +74,11 @@ class FireResetEnv(Wrapper):
     def step(self, action):
         return self.env.step(action)
 
+"""
+Need to learn more 
 
+:)
+"""
 class FrameBuffer(ObservationWrapper):
     def __init__(self, env, num_steps, dtype=np.float32):
         super(FrameBuffer, self).__init__(env)
@@ -89,6 +99,9 @@ class FrameBuffer(ObservationWrapper):
         return self.buffer
 
 
+"""
+Reshapes the image from the Frame Downsample (makes pytorch from black and white image)
+"""
 class ImageToPyTorch(ObservationWrapper):
     def __init__(self, env):
         super(ImageToPyTorch, self).__init__(env)
@@ -106,7 +119,9 @@ class NormalizeFloats(ObservationWrapper):
     def observation(self, obs):
         return np.array(obs).astype(np.float32) / 255.0
 
-
+"""
+Get a custom reward for the AI
+"""
 class CustomReward(Wrapper):
     def __init__(self, env):
         super(CustomReward, self).__init__(env)
