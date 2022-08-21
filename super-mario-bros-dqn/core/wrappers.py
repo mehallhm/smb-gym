@@ -3,7 +3,8 @@ import numpy as np
 from collections import deque
 from gym import make, ObservationWrapper, wrappers, Wrapper
 from gym.spaces import Box
-from nes_py.wrappers import JoypadSpace
+# from nes_py.wrappers import JoypadSpace
+from core.hoypad import JoypadSpace
 
 """
 Takes in an image 84 x 84 in 255 color on uint8 format

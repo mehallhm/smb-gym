@@ -19,6 +19,7 @@ def test(environment, action_space, iteration):
         state_v = torch.tensor(np.array([state], copy=False))
         q_vals = net(state_v).data.numpy()[0]
         action = np.argmax(q_vals)
+        print(action)
         state, reward, done, info = env.step(action)
         total_reward += reward
         if info['flag_get']:
