@@ -1,4 +1,6 @@
 from bridge import Bridge
+import numpy as np
+from helper.encode import encode
 
 import time
 
@@ -13,6 +15,17 @@ class Env():
 
 	def __init__(self) -> None:
 		self.bridge = Bridge()
+	
+	def step(self, action) -> tuple:
+		pass
+	
+	def _encode_state(self) -> np.ndarray:
+		pass
+
+	def reset(self) -> None:
+		pass
+
+
 
 
 env = Bridge()

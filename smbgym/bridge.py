@@ -17,6 +17,8 @@ class Bridge:
 
 		self.world = py4j.java_gateway.get_field(self.game, "world")
 		self.mario = py4j.java_gateway.get_field(self.world, "mario")
+
+		self.game.step()
 	
 	def register_inputs(self):
 		pass
@@ -87,13 +89,19 @@ class Bridge:
 			y = xy[1]
 		)
 
-	def get_combined_observation(self, x, y, world_detail=1, enemy_detail=1):
+	def get_observation(self, x, y, world_detail=1, enemy_detail=1):
 		return self.world.getMergedObservation(x, y, world_detail, enemy_detail)
 	
 	def return_human_observation(self, x, y):
 		"""
 		Returns a human readable observation
 		"""
-		screen = self.get_combined_observation(x, y)
+		screen = self.get_observation(x, y)
 		screen = np.array(screen)
 		return np.flip(np.rot90(screen, 1, (0,1)), 0)
+	
+	def reset(self) -> None:
+		pass
+
+	def step(self) -> None:
+		self.game.step()
