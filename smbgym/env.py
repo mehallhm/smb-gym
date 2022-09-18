@@ -1,10 +1,14 @@
+from multiprocessing.dummy import Array
+from typing import Tuple
 from bridge import Bridge
 import numpy as np
 from helper.encode import encode
+from py4j.java_gateway import JavaGateway
+import gym
 
 import time
 
-class Env():
+class Env:
 	"""
 	Another environment for playing Super Mario Bros with OpenAI Gym
 
@@ -13,56 +17,62 @@ class Env():
 
 	"""
 
+	monitor = False
+
 	def __init__(self) -> None:
 		self.bridge = Bridge()
+
+		self.bridge.visuals = self.monitor
+		self.bridge.set_level("/home/micha/Source/smb-gym/original/lvl-1.txt")
+		self.bridge.initalize()
 	
-	def step(self, action) -> tuple:
-		pass
+	def _encode_state(self) -> list:
+			conv = []
+			for x, xl in enumerate(self.state):
+				conv.append([])
+				for y, yp in enumerate(xl):
+					conv[x].append(encode[self.state[x][y]])
+			self.state = conv
+			return conv
+
+	def step(self, action) -> tuple[list, float, bool, bool, dict]:
+		self.bridge.step(action)
+		return (
+			self.bridge._get_observation(),
+			0,
+			False,
+			False,
+			self.bridge.get_info()
+		)
+
+	def reset(self) -> tuple[list, float, bool, bool, dict]:
+		self.bridge.gateway.shutdown()
+		# self.bridge.root.kill()
+
+		self.bridge = Bridge()
+
+		self.bridge.visuals = self.monitor
+		self.bridge.set_level("/home/micha/Source/smb-gym/original/lvl-1.txt")
+		self.bridge.initalize()
+		return (
+			self.bridge._get_observation(),
+			0,
+			False,
+			False,
+			self.bridge.get_info()
+		)
+
+env = Env()
+while True:
+	env.step([1, 0, 0, 0, 0])
+	info = env.bridge.get_info()
+	if info['life'] == 0:
+		env.reset()
+		# import time
+		# time.sleep(10)
+		# break
+	print(info)
 	
-	def _encode_state(self) -> np.ndarray:
-		pass
-
-	def reset(self) -> None:
-		pass
-
-
-
-
-env = Bridge()
-
-
-def timer(func):
-	def wrap(*args, **kwargs):
-		start = time.time()
-		func(*args, **kwargs)
-		end = time.time()
-		print(end - start)
-	return wrap
-
-# print(env.return_human_observation(info["x"], info["y"]))
-
-
-@timer
-def take_steps(steps):
-	for letter in steps:
-		if letter == "l":
-			env.agent.left()
-		elif letter == "r":
-			env.agent.right()
-		elif letter == "d":
-			env.agent.down()
-		elif letter == "s":
-			env.agent.speed()
-		elif letter == "j":
-			env.agent.jump()
-		elif letter == "q":
-			break
-		env.game.step()
-
-	env.agent.clear()
-
-take_steps("rrrrrrrrrr")
-
 # print(get_agent)
 
 # while True:

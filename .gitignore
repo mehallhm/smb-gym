@@ -1,1 +1,4 @@
 .vscode
+smbgym/__pycache__
+mario
+build
