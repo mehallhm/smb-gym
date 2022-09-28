@@ -19,7 +19,7 @@ setup(
         'Reinforcement-Learning-Environment'
     ]),
     classifiers=[
-        'Development Status :: 5 - Production/Stable',
+        'Development Status :: 1 - Active Development',
         'Intended Audience :: Developers',
         'Intended Audience :: Science/Research',
         'License :: Free For Educational Use',
@@ -41,9 +41,9 @@ setup(
     packages=find_packages(exclude=['tests', '*.tests', '*.tests.*']),
     # package_data={ 'smb-gym': ['_roms/*.nes'] },
     install_requires=['py4j>=0.10.0'],
-    entry_points={
-        'console_scripts': [
-            'gym_super_mario_bros = gym_super_mario_bros._app.cli:main',
-        ],
-    },
+    # entry_points={
+    #     'console_scripts': [
+    #         'gym_super_mario_bros = gym_super_mario_bros._app.cli:main',
+    #     ],
+    # },
 )

@@ -2,3 +2,5 @@
 smbgym/__pycache__
 mario
 build
+__pycache__
+*.code-workspace

@@ -1,41 +1,37 @@
-from ast import Str
 from py4j.java_gateway import JavaGateway
 import py4j
 import numpy as np
 import sys
+import os
 
 class Bridge:
 	"""
 	A bridge between Python and the Java Mario Environment
 	"""
 
-	visuals = True
-
-	def __init__(self) -> None:
+	def __init__(self, visuals=False) -> None:
+		self.visuals = visuals
 		
 		self._connect()
-		# py4j.java_gateway.set_field(self.root, 'visuals', self.visuals)
 	
 	def _connect(self) -> None:
 		# self.gateway = JavaGateway(classpath="../lib/ai.jar" die_on_exit=True)
-		self.gateway = JavaGateway.launch_gateway(classpath="/home/micha/Source/smb-gym/lib/ap.jar", die_on_exit=True, redirect_stdout=sys.stdout, redirect_stderr=sys.stderr)
-		self.clss = self.gateway.jvm.PlayLevel()
-		# self.clss.initializeHeadless()
-		self.clss.initializeWithGraphics()
-		# self.clss.initialize()
-		# self.gateway = JavaGateway()
-		self.root = self.clss
+		path = os.path.abspath(r"./smbgym/lib/ap.jar")
+		self.gateway = JavaGateway.launch_gateway(classpath=path, die_on_exit=True, redirect_stdout=sys.stdout, redirect_stderr=sys.stderr)
+		self.root = self.gateway.jvm.PlayLevel()
+		self.createGame()
+	
+	def createGame(self) -> None:
+		if self.visuals == "human":
+			self.root.initializeWithGraphics()
+		else:
+			self.root.initializeHeadless()
 
-	def set_level(self, path) -> None:
+	def set_level(self, path) -> str:
 		py4j.java_gateway.set_field(self.root, 'level', path)
 		return path
 	
 	def initalize(self) -> None:
-		# py4j.java_gateway.set_field(self.root, 'visuals', True)
-		# self.root.diableGraphics()
-
-		# self.root.initialize()
-
 		self.agent = py4j.java_gateway.get_field(self.root, 'agent')
 		self.game = py4j.java_gateway.get_field(self.root, 'game')
 
@@ -43,24 +39,15 @@ class Bridge:
 		self.mario = py4j.java_gateway.get_field(self.world, "mario")
 
 		self.game.step()
-	
-	def shutdown(self) -> None:
-		self.gateway.shutdown()
-	
-	def register_inputs(self, action):
-		# [right, speed, left, down, jump]
-		self.agent.clear()
 
-		if action[0] == 1:
-			self.agent.right()
-		if action[1] == 1:
-			self.agent.speed()
-		if action[2] == 1:
-			self.agent.left()
-		if action[3] == 1:
-			self.agent.down()
-		if action[4] == 1:
-			self.agent.jump()
+	
+	def reset(self) -> None:
+		self.createGame()
+		self.initalize()
+
+	def step(self, action) -> None:
+		self.register_inputs(action)
+		self.game.step()
 
 	def _get_coins(self):
 		"""
@@ -116,6 +103,38 @@ class Bridge:
 	def _get_time (self):
 		return py4j.java_gateway.get_field(self.world, "currentTimer") / 1000
 
+	def get_observation(self):
+		xy = self._get_XY()
+		x = xy[0]
+		y = xy[1]
+		return self.world.getMergedObservation(x, y)
+
+	def shutdown(self) -> None:
+		self.gateway.shutdown()
+	
+	def register_inputs(self, action):
+		# [right, speed, left, down, jump]
+		self.agent.clear()
+
+		if action[0] == 1:
+			self.agent.right()
+		if action[1] == 1:
+			self.agent.speed()
+		if action[2] == 1:
+			self.agent.left()
+		if action[3] == 1:
+			self.agent.down()
+		if action[4] == 1:
+			self.agent.jump()
+	
+	def get_human_observation(self):
+		"""
+		Returns an observation 
+		"""
+		screen = self.get_observation()
+		screen = np.array(screen)
+		return np.flip(np.rot90(screen, 1, (0,1)), 0)
+	
 	def get_info(self):
 		"""
 		Returns a Dictionary of information from the environment
@@ -133,21 +152,3 @@ class Bridge:
 			x = xy[0],
 			y = xy[1]
 		)
-
-	def _get_observation(self, x, y):
-		return self.world.getMergedObservation(x, y)
-	
-	def return_human_observation(self, x, y):
-		"""
-		Returns a human readable observation
-		"""
-		screen = self._get_observation(x, y)
-		screen = np.array(screen)
-		return np.flip(np.rot90(screen, 1, (0,1)), 0)
-	
-	def reset(self) -> None:
-		pass
-
-	def step(self, action) -> None:
-		self.register_inputs(action)
-		self.game.step()

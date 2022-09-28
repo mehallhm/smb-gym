@@ -251,6 +251,12 @@ public class MarioGame {
         // int fps = 30;
         // this.visuals = true;
         this.visuals = visuals;
+        if (this.window != null) {
+            // this.window.dispatchEvent(new WindowEvent(this.window, WindowEvent.WINDOW_CLOSING));
+            this.window.setVisible(false);
+            this.window.dispose();
+        };
+        this.render = null;
 
         if (this.visuals) {
             this.window = new JFrame("Mario AI Framework");

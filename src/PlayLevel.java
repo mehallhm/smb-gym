@@ -14,7 +14,6 @@ public class PlayLevel {
     public static MarioAgent agent = new agents.bridge.Agent();
     public static MarioGame game = new MarioGame();
     public static String level = "/home/micha/Source/smb-gym/original/lvl-1.txt";
-    public boolean visuals = false;
 
     public static void printResults(MarioResult result) {
         System.out.println("****************************************************************");
@@ -51,16 +50,6 @@ public class PlayLevel {
         // printResults(game.playGame(getLevel("./levels/original/lvl-1.txt"), 200, 0));
         // printResults(game.runGame(agent, getLevel("./levels/original/lvl-1.txt"), 20, 0, true));
         game.runGameN(agent, getLevel(level), 20, 0, false);
-    }
-
-    public void initialize() {
-        // printResults(game.playGame(getLevel("./levels/original/lvl-1.txt"), 200, 0));
-        // printResults(game.runGame(agent, getLevel("./levels/original/lvl-1.txt"), 20, 0, true));
-        game.runGameN(agent, getLevel(level), 20, 0, this.visuals);
-    }
-
-    public static void kill() {
-        System.exit(0);
     }
 
     // public static void main(String[] args) {
