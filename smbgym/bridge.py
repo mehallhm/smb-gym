@@ -15,9 +15,8 @@ class Bridge:
 		self._connect()
 	
 	def _connect(self) -> None:
-		# self.gateway = JavaGateway(classpath="../lib/ai.jar" die_on_exit=True)
-		path = os.path.abspath(r"./smbgym/lib/ap.jar")
-		self.gateway = JavaGateway.launch_gateway(classpath=path, die_on_exit=True, redirect_stdout=sys.stdout, redirect_stderr=sys.stderr)
+		level_path = os.path.join(os.path.dirname(__file__), "./bin/ap.jar")
+		self.gateway = JavaGateway.launch_gateway(classpath=level_path, die_on_exit=True, redirect_stdout=sys.stdout, redirect_stderr=sys.stderr)
 		self.root = self.gateway.jvm.PlayLevel()
 		self.createGame()
 	
@@ -113,19 +112,41 @@ class Bridge:
 		self.gateway.shutdown()
 	
 	def register_inputs(self, action):
-		# [right, speed, left, down, jump]
 		self.agent.clear()
 
-		if action[0] == 1:
+		if action == 0:
+			pass
+		elif action == 1:
 			self.agent.right()
-		if action[1] == 1:
-			self.agent.speed()
-		if action[2] == 1:
-			self.agent.left()
-		if action[3] == 1:
-			self.agent.down()
-		if action[4] == 1:
+		elif action == 2:
+			self.agent.right()
 			self.agent.jump()
+		elif action == 3:
+			self.agent.right()
+			self.agent.speed()
+		elif action == 4:
+			self.agent.right()
+			self.agent.jump()
+			self.agent.speed()
+		elif action == 5:
+			self.agent.jump()
+		elif action == 6:
+			self.agent.left()
+		elif action == 7:
+			self.agent.left()
+			self.agent.jump()
+		elif action == 8:
+			self.agent.left()
+			self.agent.speed()
+		elif action == 9:
+			self.agent.left()
+			self.agent.jump()
+			self.agent.speed()
+		elif action == 10:
+			self.agent.down()
+		elif action == 11:
+			# self.agent.up()
+			pass
 	
 	def get_human_observation(self):
 		"""
@@ -145,10 +166,10 @@ class Bridge:
 			flag_get = self._flag_get(),
 			life = self._get_lives(),
 			score = 0,
-			stage = 0,
+			stage = None,
 			status = self._get_mario_status(),
 			time = self._get_time(),
-			world = 0,
+			world = None,
 			x = xy[0],
 			y = xy[1]
 		)

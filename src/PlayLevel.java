@@ -52,6 +52,11 @@ public class PlayLevel {
         game.runGameN(agent, getLevel(level), 20, 0, false);
     }
 
+    public void closeWindow() {
+        game.window.setVisible(false);
+        game.window.dispose();
+    }
+
     // public static void main(String[] args) {
     //     // PlayLevel app = new PlayLevel();
 	// 	// app is now the gateway.entry_point

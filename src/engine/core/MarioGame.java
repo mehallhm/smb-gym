@@ -52,7 +52,7 @@ public class MarioGame {
     private MarioEvent[] killEvents;
 
     //visualization
-    private JFrame window = null;
+    public JFrame window = null;
     private MarioRender render = null;
     private MarioAgent agent = null;
     public MarioWorld world = null;

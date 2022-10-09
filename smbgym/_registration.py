@@ -1,7 +1,10 @@
 from gym.envs.registration import register
+import gym
 
 register(
-    id='gym_examples/GridWorld-v0',
-    entry_point='smbgym.env:Env',
+    id='Mario-v0',
+    entry_point='smbgym:Env',
     max_episode_steps=999999,
 )
+
+make = gym.make

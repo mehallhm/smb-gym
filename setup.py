@@ -8,7 +8,7 @@ from setuptools import setup, find_packages
 
 
 setup(
-    name='smb-gym',
+    name='smbgym',
     version='0.0.1',
     description='Super Mario Bros. for OpenAI Gym',
     # long_description=README,
@@ -41,6 +41,7 @@ setup(
     packages=find_packages(exclude=['tests', '*.tests', '*.tests.*']),
     # package_data={ 'smb-gym': ['_roms/*.nes'] },
     install_requires=['py4j>=0.10.0'],
+    include_package_data=True
     # entry_points={
     #     'console_scripts': [
     #         'gym_super_mario_bros = gym_super_mario_bros._app.cli:main',

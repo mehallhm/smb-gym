@@ -1,0 +1,2 @@
+include smbgym/bin/*.jar
+include original/*.txt
