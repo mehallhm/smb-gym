@@ -1,6 +1,6 @@
 # smb-gym
 ##### A Super Mario Bros Gym not built without enabling custom levels and data injection
-[Mario Block]!()
+[Mario Block]!(mario-blocks.png)
 
 
 
