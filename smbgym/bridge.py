@@ -18,19 +18,17 @@ class Bridge:
 		level_path = os.path.join(os.path.dirname(__file__), "./bin/ap.jar")
 		self.gateway = JavaGateway.launch_gateway(classpath=level_path, die_on_exit=True, redirect_stdout=sys.stdout, redirect_stderr=sys.stderr)
 		self.root = self.gateway.jvm.PlayLevel()
-		self.createGame()
-	
-	def createGame(self) -> None:
-		if self.visuals == "human":
-			self.root.initializeWithGraphics()
-		else:
-			self.root.initializeHeadless()
 
 	def set_level(self, path) -> str:
 		py4j.java_gateway.set_field(self.root, 'level', path)
 		return path
 	
 	def initalize(self) -> None:
+		if self.visuals == "human":
+			self.root.initializeWithGraphics()
+		else:
+			self.root.initializeHeadless()
+
 		self.agent = py4j.java_gateway.get_field(self.root, 'agent')
 		self.game = py4j.java_gateway.get_field(self.root, 'game')
 
@@ -41,7 +39,6 @@ class Bridge:
 
 	
 	def reset(self) -> None:
-		self.createGame()
 		self.initalize()
 
 	def step(self, action) -> None:

@@ -13,7 +13,7 @@ public class PlayLevel {
     // public static MarioAgent agent = new agents.robinBaumgarten.Agent();
     public static MarioAgent agent = new agents.bridge.Agent();
     public static MarioGame game = new MarioGame();
-    public static String level = "/home/micha/Source/smb-gym/original/lvl-1.txt";
+    public static String level = "";
 
     public static void printResults(MarioResult result) {
         System.out.println("****************************************************************");

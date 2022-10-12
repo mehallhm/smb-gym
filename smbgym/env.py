@@ -36,10 +36,11 @@ class Env(gym.Env):
 		self.render_mode = render_mode
 
 	def _set_level(self):
-		dir_path = path.join(path.dirname(__file__), "../original")
+		dir_path = path.join(path.dirname(__file__), "./original")
 		if self.level_mode == "random":
 			num = random.randint(1, 15)
 			level = path.join(dir_path, "./" + "lvl-" + str(num) + ".txt")
+			print(level)
 			self.bridge.set_level(level)
 		else:
 			level = path.join(dir_path, "./" + self.level_mode)
